@@ -10,17 +10,26 @@ namespace ProjectCinema.Entities
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int SeatId { get; set; }
+
         [Range(1, int.MaxValue)]
         [Required]
         public int SeatNumber { get; set; }
+
         public SeatAvailability SeatAvailability { get; set; }
+
         [Required]
         public SeatType SeatType { get; set; } 
+
         [Required]
         public DateTime CreatedAt { get; set; }
+
+        public int UpdatedAt { get; set; }
+
         public ICollection<Ticket>? Tickets { get; set; }
+
         [Required]
         public int RowId { get; set; }
+
         [ForeignKey("RowId")]
         public Row? Row { get; set; }
     }
