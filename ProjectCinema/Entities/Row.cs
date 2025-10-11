@@ -7,7 +7,7 @@ namespace ProjectCinema.Entities
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+        public int RowId { get; set; }
         [Required]
         public int HallId { get; set; }
         [ForeignKey("HallId")]
