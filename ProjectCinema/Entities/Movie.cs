@@ -12,11 +12,11 @@ namespace ProjectCinema.Entities
 
         [Required]
         [StringLength(256, MinimumLength = 1)]
-        public string MovieName { get; set; }
+        public string MovieName { get; set; } = null!;
 
         [Required]
         [StringLength(1028, MinimumLength = 1)]
-        public string Description { get; set; }
+        public string Description { get; set; } = null!;
 
         [Range(1, int.MaxValue)]
         [Required]
@@ -34,18 +34,18 @@ namespace ProjectCinema.Entities
 
         [Required]
         [StringLength(256, MinimumLength = 1)]
-        public string Url { get; set; }
+        public string Url { get; set; } = null!;
 
         [Required]
         public DateOnly ReleaseYear { get; set; }
 
         [Required]
         [StringLength(128, MinimumLength = 2)]
-        public string Genre { get; set; }
+        public string Genre { get; set; } = null!;
 
         [Required]
         [StringLength(64, MinimumLength = 2)]
-        public string Language { get; set; }
+        public string Language { get; set; } = null!;
 
         [StringLength(256, MinimumLength = 1)]
         public string? ProductionStudio { get; set; }
@@ -62,6 +62,6 @@ namespace ProjectCinema.Entities
 
         public DateTime UpdatedAt { get; set; }
 
-        public ICollection<MovieScreening> MovieScreenings { get; set; }
+        public ICollection<MovieScreening> MovieScreenings { get; set; } = null!;
     }
 }
