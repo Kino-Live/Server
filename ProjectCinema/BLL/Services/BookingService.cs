@@ -38,38 +38,6 @@ namespace ProjectCinema.BLL.Services
 
         public async Task<BookingDTO> CreateBookingAsync(BookingCreateDTO bookingCreateDTO)
         {
-            //check if user with given id exists
-            if(await _userService.GetByIdAsync(bookingCreateDTO.UserId) == null)
-            {
-                throw new InvalidOperationException($"User with id equals {bookingCreateDTO.UserId} does not exists");
-            }
-
-            //Check if promocode with given id exists and relevant
-
-            PromocodeDTO? promocode = null;
-
-            if (bookingCreateDTO.PromocodeId != null) 
-            {
-                promocode = await _promocodeService.GetByIdAsync(bookingCreateDTO.PromocodeId.Value);
-
-                if (promocode == null)
-                {
-                    throw new Exception($"Promocode with id equals {bookingCreateDTO.PromocodeId} does not exists");
-                }
-
-                if (!promocode.IsActive || promocode.ExpiryDate < DateTime.UtcNow)
-                {
-                    throw new InvalidOperationException("Promocode is not relevant");
-                }
-            }
-
-            //Check if payment with given if exists and successfull
-
-            var payment = await _paymentService.GetByIdAsync(bookingCreateDTO.PaymentId);
-            if (payment == null || payment.PaymentStatus != PaymentStatus.Success)
-            {
-                throw new InvalidOperationException("Invalid or incomplete payment.");
-            }
 
             Booking booking = _mapper.Map<Booking>(bookingCreateDTO);
             booking.BookingStatus = BookingStatus.Active;

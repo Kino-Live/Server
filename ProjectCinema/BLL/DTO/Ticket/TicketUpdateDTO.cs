@@ -6,9 +6,8 @@ namespace ProjectCinema.BLL.DTO.Ticket
 {
     public class TicketUpdateDTO
     {
-        public int TicketId { get; set; }
-        public TicketStatus TicketStatus { get; set; }
+        public TicketStatus? TicketStatus { get; set; }
 
-        public Decimal PriceAtPurchase { get; set; }
+        public Decimal? PriceAtPurchase { get; set; }
     }
 }

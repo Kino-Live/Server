@@ -9,6 +9,8 @@ using ProjectCinema.BLL.DTO.Payment;
 using ProjectCinema.BLL.DTO.Promocode;
 using ProjectCinema.BLL.DTO.Row;
 using ProjectCinema.BLL.DTO.Seat;
+using ProjectCinema.BLL.DTO.ShowTime;
+using ProjectCinema.BLL.DTO.Ticket;
 using ProjectCinema.BLL.Interfaces;
 using ProjectCinema.BLL.Interfaces.IMovieScreeningServices;
 using ProjectCinema.BLL.Services;
@@ -24,6 +26,8 @@ using ProjectCinema.Validations.PaymentValidation;
 using ProjectCinema.Validations.PromocodeValidation;
 using ProjectCinema.Validations.RowValidation;
 using ProjectCinema.Validations.SeatValidation;
+using ProjectCinema.Validations.ShowTimeValidation;
+using ProjectCinema.Validations.TicketValidation;
 
 namespace ProjectCinema
 {
@@ -94,13 +98,19 @@ namespace ProjectCinema
             builder.Services.AddScoped<IValidator<MovieScreeningUpdateDTO>, MovieScreeningUpdateDTOValidator>();
 
             builder.Services.AddScoped<IValidator<PaymentCreateDTO>, PaymentCreateDTOValidator>();
-            builder.Services.AddScoped<IValidator<PaymentUpdateDTO>,  PaymentUpdateDTOValidator>();
+            builder.Services.AddScoped<IValidator<PaymentUpdateDTO>, PaymentUpdateDTOValidator>();
 
             builder.Services.AddScoped<IValidator<RowCreateDTO>, RowCreateDTOValidator>();
             builder.Services.AddScoped<IValidator<RowUpdateDTO>,  RowUpdateDTOValidator>();
 
             builder.Services.AddScoped<IValidator<SeatCreateDTO>, SeatCreateDTOValidator>();
             builder.Services.AddScoped<IValidator<SeatUpdateDTO>, SeatUpdateDTOValidator>();
+
+            builder.Services.AddScoped<IValidator<ShowTimeCreateDTO>, ShowTimeCreateDTOValidator>();
+            builder.Services.AddScoped<IValidator<ShowTimeUpdateDTO>, ShowTimeUpdateDTOValidator>();
+
+            builder.Services.AddScoped<IValidator<TicketCreateDTO>, TicketCreateDTOValidator>();
+            builder.Services.AddScoped<IValidator<TicketUpdateDTO>, TicketUpdateDTOValidator>();
 
             var app = builder.Build();
 

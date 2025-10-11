@@ -21,6 +21,10 @@ namespace ProjectCinema.BLL.DTO.Users
         [Phone]
         public string? PhoneNumber { get; set; }
         [Required]
+        public int Password { get ; set; }
+        [Required]
+        public int ConfirmPassword { get; set; }
+        [Required]
         public DateOnly DateOfBirth { get; set; }
     }
 }

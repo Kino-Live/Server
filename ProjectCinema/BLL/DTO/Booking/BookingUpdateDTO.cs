@@ -7,7 +7,6 @@ namespace ProjectCinema.BLL.DTO.Booking
 {
     public class BookingUpdateDTO
     {
-        public int BookingId { get; set; }
-        public BookingStatus BookingStatus { get; set; }
+        public BookingStatus? BookingStatus { get; set; }
     }
 }

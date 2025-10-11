@@ -45,29 +45,6 @@ namespace ProjectCinema.BLL.Services
         public async Task<ShowTimeDTO> CreateShowTimeAsync(ShowTimeCreateDTO showTimeCreateDTO)
         {
 
-
-
-            // Проверка корректности времени
-            if (showTimeCreateDTO.StartTime <= DateTime.Now)
-            {
-                throw new ArgumentException("The session start time must be in the future.");
-            }
-
-            if (showTimeCreateDTO.EndTime <= showTimeCreateDTO.StartTime)
-            {
-                throw new ArgumentException("The end time of the session must be later than the start time.");
-            }
-
-            if (await _hallService.GetByIdAsync(showTimeCreateDTO.HallId) == null)
-            {
-                throw new ArgumentException($"Hall id equal {showTimeCreateDTO.HallId} does not exist");
-            }
-
-            if (await _movieScreeningCrudService.GetByIdAsync(showTimeCreateDTO.MovieScreeningId) == null)
-            {
-                throw new ArgumentException($"MovieScreening is equal {showTimeCreateDTO.MovieScreeningId} does not exist");
-            }
-
             ShowTime showTime = _mapper.Map<ShowTime>(showTimeCreateDTO);
             showTime.CreatedAt = DateTime.Now;
             showTime.ShowTimeStatus = ShowTimeStatus.Active;
@@ -84,15 +61,10 @@ namespace ProjectCinema.BLL.Services
 
             if(await _movieService.GetByIdAsync(movieId) == null)
             {
-                throw new ArgumentException($"Movie id equal {movieId} does not exist");
+                throw new KeyNotFoundException($"Movie id equal {movieId} does not exist");
             }
 
             IEnumerable<MovieScreeningDetailsDTO> movieScreenings = await _movieScreeningQueryService.GetScreeningsDetailsByMovieIdAsync(movieId);
-
-            if( movieScreenings == null )
-            {
-                throw new Exception($"Has not found moviescreenings by movie id that equal {movieId}");
-            }
 
             List<ShowTimeDTO>? showTimes = movieScreenings
                             .SelectMany(ms => ms.ShowTimes)
@@ -108,7 +80,7 @@ namespace ProjectCinema.BLL.Services
 
             if(await _showTimeRepository.GetByIdAsync(showTimeId) == null)
             {
-                throw new Exception($"ShowTime id equal {showTimeId} does not exist");
+                throw new KeyNotFoundException($"ShowTime id equal {showTimeId} does not exist");
             }
 
             ShowTime showTime = await _showTimeRepository.GetByIdAsync(showTimeId);
@@ -125,7 +97,7 @@ namespace ProjectCinema.BLL.Services
 
             if(await _hallService.GetByIdAsync(hallId) == null)
             {
-                throw new Exception($"Hall id equal {hallId} does not exist");
+                throw new KeyNotFoundException($"Hall id equal {hallId} does not exist");
             }
 
             IEnumerable<ShowTime>? showTimes = await _showTimeRepository.GetShowTimesByHallIdAsync(hallId);
@@ -138,7 +110,7 @@ namespace ProjectCinema.BLL.Services
 
             if(await _movieScreeningCrudService.GetByIdAsync(movieScreeningId) == null)
             {
-                throw new Exception($"MovieScreening id equal {movieScreeningId} does not exist");
+                throw new KeyNotFoundException($"MovieScreening id equal {movieScreeningId} does not exist");
             }
 
             IEnumerable<ShowTime> showTimes = await _showTimeRepository.GetShowTimesByMovieScreeningIdAsync(movieScreeningId);
@@ -161,7 +133,7 @@ namespace ProjectCinema.BLL.Services
 
             if (await _showTimeRepository.GetByIdAsync(showTimeId) == null)
             {
-                throw new Exception($"ShowTime id equal {showTimeId} does not exist");
+                throw new KeyNotFoundException($"ShowTime id equal {showTimeId} does not exist");
             }
 
             ShowTime showTime = await _showTimeRepository.GetByIdAsync(showTimeId);
