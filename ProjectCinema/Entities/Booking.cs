@@ -26,11 +26,7 @@ namespace ProjectCinema.Entities
         [Required]
         public int UserId { get; set; }
 
-        [ForeignKey("PeymentId")]
         public Payment? Payment { get; set; }
-
-        [Required]
-        public int PaymentId { get; set; }
 
         [ForeignKey("PromocodeId")]
         public Promocode? Promocode { get; set; }

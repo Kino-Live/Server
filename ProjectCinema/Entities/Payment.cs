@@ -9,16 +9,22 @@ namespace ProjectCinema.Entities
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int PaymentId { get; set; }
+
         [Required]
-        public PaymentMethod PeymentMethod { get; set; }
+        public PaymentMethod PaymentMethod { get; set; }
+
         [Required]
-        public Decimal AmountPaid { get; set; }
+        public decimal AmountPaid { get; set; }
+
         [Required]
         public PaymentStatus PaymentStatus { get; set; }
+
         [Required]
         public DateTime PaidAt { get; set; }
+
         [ForeignKey("BookingId")]
-        public Booking Booking { get; set; }
+        public Booking? Booking { get; set; }
+
         [Required]
         public int BookingId { get; set; }
     }

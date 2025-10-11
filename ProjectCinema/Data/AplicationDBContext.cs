@@ -37,12 +37,12 @@ namespace ProjectCinema.Data
                 .HasForeignKey(b => b.PromocodeId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // configuration one-to-one relationship between etities Payment and Booking 
+            // configuration one-to-one relationship between entities Payment and Booking 
             modelBuilder.Entity<Payment>()
                 .HasOne(p => p.Booking)
                 .WithOne(b => b.Payment)
                 .HasForeignKey<Payment>(p => p.BookingId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
 
             // configuration one-to-many relationship between entities Ticket and Booking
             modelBuilder.Entity<Ticket>()
