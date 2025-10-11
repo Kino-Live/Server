@@ -63,5 +63,8 @@ namespace ProjectCinema.Entities
         public DateTime UpdatedAt { get; set; }
 
         public ICollection<MovieScreening>? MovieScreenings { get; set; }
+
+        public ICollection<Review>? Reviews { get; set; }
+       
     }
 }
