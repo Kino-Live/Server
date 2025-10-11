@@ -33,6 +33,9 @@ namespace ProjectCinema.Entities
 
         [Required]
         public int PromocodeId { get; set; }
+
         public ICollection<Ticket>? Tickets { get; set; }
+
+        public ICollection<Notification>? Notifications { get; set; } 
     }
 }
