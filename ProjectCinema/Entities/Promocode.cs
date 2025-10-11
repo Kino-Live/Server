@@ -9,18 +9,27 @@ namespace ProjectCinema.Entities
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int PromocodeId { get; set; }
+
         [Required]
-        public string UniqueCode { get; set; }
+        public string UniqueCode { get; set; } = null!;
+
         [Required]
-        public PromocodeType PromocodeType { get; set; }
-        public Decimal PromocodeAmount { get; set; }
+        [Range(1, 100)]
+        public decimal PromocodeAmount { get; set; }
+
+        [Required]
+        public DateTime ValidFrom { get; set; }
+
+        [Required]
+        public DateTime ValidTo { get; set; }
+
         [Required]
         public bool IsActive { get; set; }
-        public DateTime ExpiryDate { get; set; }
-        public string Condition { get; set; }
+
         [Required]
         public DateTime CreatedAdt { get; set; }
-        public ICollection<Booking> Bookings { get; set; }
+
+        public ICollection<Booking>? Bookings { get; set; }
 
     }
 }
