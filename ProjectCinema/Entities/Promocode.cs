@@ -29,6 +29,8 @@ namespace ProjectCinema.Entities
         [Required]
         public DateTime CreatedAdt { get; set; }
 
+        public DateTime UpdatedAt  { get; set; }
+
         public ICollection<Booking>? Bookings { get; set; }
 
     }

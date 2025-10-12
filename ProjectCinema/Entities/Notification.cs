@@ -29,9 +29,9 @@ namespace ProjectCinema.Entities
         public NotificationType Type { get; set; }
 
         [Required]
-        public int CreatedAt { get; set; }
+        public DateTime CreatedAt { get; set; }
 
-        public int UpdatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
 
         public int BookingId { get; set; }
 

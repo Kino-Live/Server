@@ -22,10 +22,9 @@ namespace ProjectCinema.Entities
         [Required]
         public DateTime PaidAt { get; set; }
 
-        [ForeignKey("BookingId")]
         public Booking? Booking { get; set; }
 
-        [Required]
-        public int BookingId { get; set; }
+        public StreamingAccess? StreamingAccess { get; set; }
+
     }
 }

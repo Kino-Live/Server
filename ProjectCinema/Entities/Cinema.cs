@@ -18,7 +18,7 @@ namespace ProjectCinema.Entities
         public string? Adress { get; set; }
 
         [Required]
-        public string MapLocation { get; set; }
+        public string MapLocation { get; set; } = null!;
 
         [Required]
         public DateTime CreatedAt { get; set; }

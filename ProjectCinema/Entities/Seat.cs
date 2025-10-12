@@ -23,7 +23,7 @@ namespace ProjectCinema.Entities
         [Required]
         public DateTime CreatedAt { get; set; }
 
-        public int UpdatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
 
         public ICollection<Ticket>? Tickets { get; set; }
 
