@@ -65,6 +65,8 @@ namespace ProjectCinema.Entities
         public ICollection<MovieScreening>? MovieScreenings { get; set; }
 
         public ICollection<Review>? Reviews { get; set; }
+
+        public ICollection<StreamingAccess>? StreamingAccesses { get; set; }
        
     }
 }

@@ -18,6 +18,9 @@ namespace ProjectCinema.Data
         public DbSet<User> Users { get; set; }
         public DbSet<Ticket> Tickets { get; set; }
         public DbSet<Row> Rows { get; set; }
+        public DbSet<StreamingAccess> StreamingAccesses { get; set; }
+        public DbSet<Notification> Notifications { get; set; }
+        public DbSet<Review> Reviews { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -121,6 +124,48 @@ namespace ProjectCinema.Data
                 .HasOne(r => r.Hall)
                 .WithMany(h => h.Rows)
                 .HasForeignKey(h => h.HallId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // configuration one-to-many relationship between entities StreamingAccess and User
+            modelBuilder.Entity<StreamingAccess>()
+                .HasOne(s => s.User)
+                .WithMany()
+                .HasForeignKey(s => s.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // configuration one-to-one relationship between entities StreamingAccess and Payment
+            modelBuilder.Entity<StreamingAccess>()
+                .HasOne(s => s.Payment)
+                .WithOne(p => p.StreamingAccess)
+                .HasForeignKey<StreamingAccess>(s => s.PaymentId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // configuration one-to-many relationship between entities Movie and StreamingAccess
+            modelBuilder.Entity<StreamingAccess>()
+                .HasOne(s => s.Movie)
+                .WithMany(m => m.StreamingAccesses)
+                .HasForeignKey(s => s.MovieId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // configuration one-to-many relationship between entities Notification and Booking
+            modelBuilder.Entity<Notification>()
+                .HasOne(n => n.Booking)
+                .WithMany()
+                .HasForeignKey(n => n.BookingId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // configuration one-to-many relationship between entities Review and User
+            modelBuilder.Entity<Review>()
+                .HasOne(r => r.User)
+                .WithMany()
+                .HasForeignKey(r => r.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // configuration one-to-many relationship between entities Review and Movie
+            modelBuilder.Entity<Review>()
+                .HasOne(r => r.Movie)
+                .WithMany()
+                .HasForeignKey(r => r.MovieId)
                 .OnDelete(DeleteBehavior.Restrict);
         }
 

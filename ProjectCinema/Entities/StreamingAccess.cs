@@ -32,5 +32,11 @@ namespace ProjectCinema.Entities
 
         [ForeignKey("UserId")]
         public User? User { get; set; }
+
+        [Required]
+        public int MovieId { get; set; }
+
+        [ForeignKey("MovieId")]
+        public Movie? Movie { get; set; }
     }
 }
