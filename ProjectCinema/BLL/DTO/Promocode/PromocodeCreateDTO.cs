@@ -6,10 +6,21 @@ namespace ProjectCinema.BLL.DTO.Promocode
 {
     public class PromocodeCreateDTO
     {
-        public required string UniqueCode { get; set; }
-        public PromocodeType PromocodeType { get; set; }
+        [Required]
+        [StringLength(50, MinimumLength = 3)]
+        public string UniqueCode { get; set; } = null!;
+
+        [Required]
+        [Range(1, 100, ErrorMessage = "Promocode amount must be between 1 and 100")]
         public decimal PromocodeAmount { get; set; }
-        public DateTime ExpiryDate { get; set; }
-        public string? Condition { get; set; }
+
+        [Required]
+        public DateTime ValidFrom { get; set; }
+
+        [Required]
+        public DateTime ValidTo { get; set; }
+
+        [Required]
+        public bool IsActive { get; set; }
     }
 }
