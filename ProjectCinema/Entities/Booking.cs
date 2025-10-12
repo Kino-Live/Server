@@ -37,7 +37,7 @@ namespace ProjectCinema.Entities
         [ForeignKey("PaymentId")]
         public Payment? Payment { get; set; }
 
-        public int PaymentId { get; set; }  
+        public int? PaymentId { get; set; }  
 
         public ICollection<Ticket>? Tickets { get; set; }
 

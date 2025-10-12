@@ -26,7 +26,7 @@ namespace ProjectCinema.Entities
         [ForeignKey("PaymentId")]
         public Payment? Payment { get; set; }
 
-        public int PaymentId { get; set; }
+        public int? PaymentId { get; set; }
         [Required]
         public int UserId { get; set; }
 

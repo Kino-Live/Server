@@ -26,7 +26,7 @@ namespace ProjectCinema.MappingProfiles
 
             //Create automapper for updating booking
             CreateMap<BookingUpdateDTO, Booking>()
-                .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null)); ;
+                .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null)); 
         }
     }
 }

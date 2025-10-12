@@ -2,8 +2,10 @@
 {
     public enum StreamingAccessStatus
     {
-        Access = 0,
-        Completed = 1,
-
+        Pending,        // Streaming access created, waiting for payment
+        Active,         // Payment successful, access granted
+        Expired,        // Access expired (time reached)
+        Cancelled,      // Access cancelled (by user or timeout)
+        Failed          // Payment failed
     }
 }

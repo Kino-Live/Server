@@ -45,6 +45,7 @@ namespace ProjectCinema.Data
                 .HasOne(p => p.Booking)
                 .WithOne(b => b.Payment)
                 .HasForeignKey<Payment>(p => p.BookingId)
+                .IsRequired(false) 
                 .OnDelete(DeleteBehavior.Cascade);
 
             // configuration one-to-many relationship between entities Ticket and Booking
@@ -138,6 +139,7 @@ namespace ProjectCinema.Data
                 .HasOne(s => s.Payment)
                 .WithOne(p => p.StreamingAccess)
                 .HasForeignKey<StreamingAccess>(s => s.PaymentId)
+                .IsRequired(false)  // PaymentId is now nullable
                 .OnDelete(DeleteBehavior.Restrict);
 
             // configuration one-to-many relationship between entities Movie and StreamingAccess
