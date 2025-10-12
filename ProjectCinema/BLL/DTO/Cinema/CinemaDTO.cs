@@ -8,6 +8,9 @@ namespace ProjectCinema.BLL.DTO.Cinema
     {
         public int CinemaId { get; set; }
         public string? CinemaName { get; set; }
-        public string? Location { get; set; }
+        public string? Adress { get; set; }
+        public string MapLocation { get; set; } = null!;
+        public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
     }
 }
