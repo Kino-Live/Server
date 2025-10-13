@@ -1,4 +1,4 @@
-﻿using ProjectCinema.BLL.DTO.Booking;
+using ProjectCinema.BLL.DTO.Booking;
 using ProjectCinema.BLL.DTO.Review;
 using ProjectCinema.BLL.DTO.StreamingAccess;
 using ProjectCinema.Entities;
@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ProjectCinema.BLL.DTO.Users
 {
-    public class UserProfileDTO
+    public class UserDetailsDTO
     {
         public int UserId { get; set; }
         public string FirstName { get; set; } = null!;

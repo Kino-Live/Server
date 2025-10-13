@@ -4,12 +4,11 @@ namespace ProjectCinema.BLL.DTO.Users
 {
     public class LoginUserDTO
     {
-        [Required]
-        public string? Username { get; set; }
-        [Required]
-        [EmailAddress]
-        public string? Email { get; set; }
-        [Required]
-        public int Password { get; set; }
+        [Required(ErrorMessage = "Username or Email is required")]
+        public string UsernameOrEmail { get; set; } = null!;
+
+        [Required(ErrorMessage = "Password is required")]
+        [StringLength(100, MinimumLength = 6, ErrorMessage = "Password must be between 6 and 100 characters")]
+        public string Password { get; set; } = null!;
     }
 }
