@@ -25,22 +25,7 @@ namespace ProjectCinema.Validations.BookingValidation
                     })
                     .WithMessage(x => $"Promocode with id equals {x.PromocodeId} does not exist.");
 
-                RuleFor(x => x.PromocodeId.Value)
-                    .MustAsync(async (promoId, ct) =>
-                    {
-                        var promo = await promocodeService.GetByIdAsync(promoId);
-                        return promo != null && promo.IsActive && promo.ExpiryDate > DateTime.UtcNow;
-                    })
-                    .WithMessage("Promocode is not relevant.");
             });
-
-            RuleFor(x => x.PaymentId)
-                .MustAsync(async (paymentId, ct) =>
-                {
-                    var payment = await paymentService.GetByIdAsync(paymentId);
-                    return payment != null && payment.PaymentStatus == PaymentStatus.Success;
-                })
-                .WithMessage("Invalid or incomplete payment.");
         }
     }
 }

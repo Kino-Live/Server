@@ -7,9 +7,9 @@ namespace ProjectCinema.Validations.PaymentValidation
     {
         public PaymentUpdateDTOValidator()
         {
-            When(p => p.PeymentMethod.HasValue, () =>
+            When(p => p.PaymentMethod.HasValue, () =>
             {
-                RuleFor(p => p.PeymentMethod)
+                RuleFor(p => p.PaymentMethod)
                     .IsInEnum().WithMessage("The specified payment method is incorrect.");
             });
         }

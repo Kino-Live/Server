@@ -13,10 +13,10 @@ namespace ProjectCinema.Validations.CinemaValidation
                     .Matches(@"^[a-zA-Z\s]+$").WithMessage("Cinema name must contain only letters and spaces.")
             );
 
-            When(c => c.Location != null, () =>
-                 RuleFor(x => x.Location)
-                    .Length(2, 256).WithMessage("Location must be between 2 and 256 characters.")
-            );
+            //When(c => c.Location != null, () =>
+            //     RuleFor(x => x.Location)
+            //        .Length(2, 256).WithMessage("Location must be between 2 and 256 characters.")
+            //);
         }
     }
 }

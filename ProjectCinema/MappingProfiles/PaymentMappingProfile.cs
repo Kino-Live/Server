@@ -18,8 +18,7 @@ namespace ProjectCinema.MappingProfiles
                 .ForMember(dest => dest.StreamingAccess, opt => opt.MapFrom(src => src.StreamingAccess));
 
             //Create automapper for creation the payment
-            CreateMap<PaymentCreateDTO, Payment>()
-                .ForMember(dest => dest.BookingId, opt => opt.MapFrom(src => src.BookingId));
+            CreateMap<PaymentCreateDTO, Payment>();
 
             //Create automapper for updating the payment
             CreateMap<PaymentUpdateDTO, Payment>()

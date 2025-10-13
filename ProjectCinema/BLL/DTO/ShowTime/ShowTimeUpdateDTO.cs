@@ -17,5 +17,6 @@ namespace ProjectCinema.BLL.DTO.ShowTime
 
         [Range(1, double.MaxValue, ErrorMessage = "Ticket price must be greater than 0")]
         public decimal? TicketPrice { get; set; }
+
     }
 }

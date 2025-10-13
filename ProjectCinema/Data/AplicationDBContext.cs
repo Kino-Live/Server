@@ -44,7 +44,7 @@ namespace ProjectCinema.Data
             modelBuilder.Entity<Payment>()
                 .HasOne(p => p.Booking)
                 .WithOne(b => b.Payment)
-                .HasForeignKey<Payment>(p => p.BookingId)
+                .HasForeignKey<Booking>(p => p.PaymentId)
                 .IsRequired(false) 
                 .OnDelete(DeleteBehavior.Cascade);
 

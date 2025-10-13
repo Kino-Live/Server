@@ -19,42 +19,37 @@ namespace ProjectCinema.Validations.PaymentValidation
             _paymanentService = paymentService;
 
 
-            RuleFor(x => x.PeymentMethod)
+            RuleFor(x => x.PaymentMethod)
                 .NotEmpty().WithMessage("Payment method is required.")
                 .IsInEnum().WithMessage("The specified payment method is incorrect.");
 
             RuleFor(x => x.AmountPaid)
                 .GreaterThan(0).WithMessage("Amount paid must be greater than 0.");
 
-            RuleFor(x => x.BookingId)
-                .GreaterThan(0).WithMessage("Booking ID must be greater than 0.")
-                .MustAsync(IsValidBooking).WithMessage("The specified booking was not found.")
-                .MustAsync(IsUniquePayment).WithMessage("There is already a successful payment for this booking.");
-
-            RuleFor(x => x)
-                .MustAsync((x, cancellationToken) => IsEqualToBookingAmount(x.AmountPaid, x.BookingId, cancellationToken))
-                .WithMessage("Payment amount must match the booking amount.");
+            //RuleFor(x => x)
+            //    .MustAsync((x, cancellationToken) => IsEqualToBookingAmount(x.AmountPaid, x.BookingId, cancellationToken))
+            //    .WithMessage("Payment amount must match the booking amount.");
         }
 
-        private async Task<bool> IsValidBooking(int bookingId, CancellationToken cancellationToken)
-        {
-            BookingDTO booking = await _bookingService.GetByIdAsync(bookingId);
+        //private async Task<bool> IsValidBooking(int bookingId, CancellationToken cancellationToken)
+        //{
+        //    BookingDTO booking = await _bookingService.GetByIdAsync(bookingId);
 
-            return booking != null;
-        }
+        //    return booking != null;
+        //}
 
-        private async Task<bool> IsUniquePayment(int bookingId, CancellationToken cancellationToken)
-        {
-            PaymentDTO existingPayment = await _paymanentService.GetByIdAsync(bookingId);
+        //private async Task<bool> IsUniquePayment(int bookingId, CancellationToken cancellationToken)
+        //{
+        //    PaymentDTO existingPayment = await _paymanentService.GetByIdAsync(bookingId);
 
-            return existingPayment == null || existingPayment.PaymentStatus != PaymentStatus.Success;
-        }
+        //    return existingPayment == null || existingPayment.PaymentStatus != PaymentStatus.Success;
+        //}
 
-        private async Task<bool> IsEqualToBookingAmount(decimal amountPaid, int bookingId, CancellationToken cancellationToken)
-        {
-            BookingDTO booking = await _bookingService.GetByIdAsync(bookingId);
+        //private async Task<bool> IsEqualToBookingAmount(decimal amountPaid, int bookingId, CancellationToken cancellationToken)
+        //{
+        //    BookingDTO booking = await _bookingService.GetByIdAsync(bookingId);
 
-            return booking?.TotalPrice == amountPaid;
-        }
+        //    return booking?.TotalPrice == amountPaid;
+        //}
     }
 }

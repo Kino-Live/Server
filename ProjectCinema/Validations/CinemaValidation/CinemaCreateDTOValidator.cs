@@ -12,9 +12,9 @@ namespace ProjectCinema.Validations.CinemaValidation
                 .Length(2, 256).WithMessage("Cinema name must be between 2 and 256 characters.")
                 .Matches(@"^[a-zA-Z\s]+$").WithMessage("Cinema name must contain only letters and spaces.");
 
-            RuleFor(x => x.Location)
-                .NotEmpty().WithMessage("Location is required.")
-                .Length(2, 256).WithMessage("Location must be between 2 and 256 characters.");
+            //RuleFor(x => x.Location)
+            //    .NotEmpty().WithMessage("Location is required.")
+            //    .Length(2, 256).WithMessage("Location must be between 2 and 256 characters.");
               
         }
     }

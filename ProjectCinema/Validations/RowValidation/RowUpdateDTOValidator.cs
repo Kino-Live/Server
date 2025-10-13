@@ -19,19 +19,19 @@ namespace ProjectCinema.Validations.RowValidation
             When(r => r.RowNumber.HasValue, () =>
             {
                 RuleFor(r => r.RowNumber)
-                    .GreaterThan(0).WithMessage("Row number must be a positive number")
+                    .GreaterThan(0).WithMessage("Row number must be a positive number");
 
-                    .MustAsync(async (dto, rowNumber, cancellation) =>
-                    {
-                        var hall = await _hallService.GetByIdAsync(dto.HallId);
-                        return rowNumber <= hall.RowCount;
-                    }).WithMessage("Row number exceeds the total number of rows allowed in the hall")
+                    //.MustAsync(async (dto, rowNumber, cancellation) =>
+                    //{
+                    //    var hall = await _hallService.GetByIdAsync(dto.HallId);
+                    //    return rowNumber <= hall.RowCount;
+                    //}).WithMessage("Row number exceeds the total number of rows allowed in the hall")
 
-                    .MustAsync(async (dto, rowNumber, cancellation) =>
-                    {
-                        return !await _context.Rows
-                        .AnyAsync(r => r.HallId == dto.HallId && r.RowNumber == rowNumber, cancellation);
-                    }).WithMessage("Row number must be unique within the hall");
+                    //.MustAsync(async (dto, rowNumber, cancellation) =>
+                    //{
+                    //    return !await _context.Rows
+                    //    .AnyAsync(r => r.HallId == dto.HallId && r.RowNumber == rowNumber, cancellation);
+                    //}).WithMessage("Row number must be unique within the hall");
             });
         }
     }

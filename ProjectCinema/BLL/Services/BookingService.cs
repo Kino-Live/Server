@@ -40,7 +40,7 @@ namespace ProjectCinema.BLL.Services
         {
 
             Booking booking = _mapper.Map<Booking>(bookingCreateDTO);
-            booking.BookingStatus = BookingStatus.Active;
+            booking.BookingStatus = BookingStatus.Pending;
             booking.CreatedAt = DateTime.Now;
 
             IEnumerable<TicketDTO> ticketsDTO = await _ticketService.GetTicketsByBookingIdAsync(booking.BookingId);
@@ -65,7 +65,15 @@ namespace ProjectCinema.BLL.Services
             }
 
             IEnumerable<TicketDTO> ticketsDTO = await _ticketService.GetTicketsByBookingIdAsync(bookingId);
-            PaymentDTO paymentDTO = await _paymentService.GetByIdAsync(booking.PaymentId);
+
+
+            PaymentDTO paymentDTO = null!;
+
+            if (booking.PaymentId.HasValue)
+            {
+                paymentDTO = await _paymentService.GetByIdAsync(booking.PaymentId.Value);
+            }
+
 
             BookingDetailsDTO bookingDetailsDTO = _mapper.Map<BookingDetailsDTO>(booking);
             bookingDetailsDTO.Tickets = ticketsDTO.ToList();

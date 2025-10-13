@@ -79,6 +79,11 @@ namespace ProjectCinema.BLL.Services
 
         }
 
+        public Task<IEnumerable<SeatDTO>> GetSeatsByShowTimeId(int showTimeId, SeatAvailability? seatAvailability = null)
+        {
+            throw new NotImplementedException();
+        }
+
         //public async Task<IEnumerable<SeatDTO>> GetSeatsByShowTimeId(int showTimeId, SeatAvailability? seatAvailability = null)
         //{
 

@@ -48,20 +48,20 @@ namespace ProjectCinema.Validations.ShowTimeValidation
                 .WithMessage("The ticket price must be greater than 0.");
             });
 
-            RuleFor(x => x)
-                .MustAsync(NoOverlappingShowTime)
-                .WithMessage("There is already a showtime scheduled in the same time slot in the selected hall.");
+            //RuleFor(x => x)
+            //    .MustAsync(NoOverlappingShowTime)
+            //    .WithMessage("There is already a showtime scheduled in the same time slot in the selected hall.");
         }
 
-        private async Task<bool> NoOverlappingShowTime(ShowTimeUpdateDTO dto, CancellationToken ct)
-        {
-            return !await _aplicationDBContext.ShowTimes
-                            .AnyAsync(st =>
-                             st.HallId == dto.HallId &&
-                             st.StartTime < dto.EndTime &&
-                             st.EndTime > dto.StartTime &&
-                            st.ShowTimeStatus == ShowTimeStatus.Active, ct);
-        }
+        //private async Task<bool> NoOverlappingShowTime(ShowTimeUpdateDTO dto, CancellationToken ct)
+        //{
+        //    return !await _aplicationDBContext.ShowTimes
+        //                    .AnyAsync(st =>
+        //                     st.HallId == dto.HallId &&
+        //                     st.StartTime < dto.EndTime &&
+        //                     st.EndTime > dto.StartTime &&
+        //                    st.ShowTimeStatus == ShowTimeStatus.Active, ct);
+        //}
     }
 }
 
