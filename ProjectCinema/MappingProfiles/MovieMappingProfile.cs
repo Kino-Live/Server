@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using ProjectCinema.BLL.DTO.Movie;
+using ProjectCinema.BLL.DTO.Review;
+using ProjectCinema.BLL.DTO.StreamingAccess;
 using ProjectCinema.Entities;
 
 namespace ProjectCinema.MappingProfiles
@@ -13,7 +15,9 @@ namespace ProjectCinema.MappingProfiles
 
             //Create automapper for details movie info
             CreateMap<Movie, MovieDetailsDTO>()
-                .ForMember(dest => dest.MovieScreenings, opt => opt.MapFrom(src =>src.MovieScreenings));
+                .ForMember(dest => dest.MovieScreenings, opt => opt.MapFrom(src => src.MovieScreenings))
+                .ForMember(dest => dest.Reviews, opt => opt.MapFrom(src => src.Reviews))
+                .ForMember(dest => dest.StreamingAccesses, opt => opt.MapFrom(src => src.StreamingAccesses));
 
             //Create automapper for creation the movie
             CreateMap<MovieCreateDTO, Movie>();

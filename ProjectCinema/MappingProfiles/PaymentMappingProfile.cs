@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ProjectCinema.BLL.DTO.Payment;
+using ProjectCinema.BLL.DTO.StreamingAccess;
 using ProjectCinema.Entities;
 
 namespace ProjectCinema.MappingProfiles
@@ -13,7 +14,8 @@ namespace ProjectCinema.MappingProfiles
 
             //Create automapper for details payment info
             CreateMap<Payment, PaymentDetailsDTO>()
-                .ForMember(dest =>dest.Booking, opt => opt.MapFrom(src => src.Booking));
+                .ForMember(dest => dest.Booking, opt => opt.MapFrom(src => src.Booking))
+                .ForMember(dest => dest.StreamingAccess, opt => opt.MapFrom(src => src.StreamingAccess));
 
             //Create automapper for creation the payment
             CreateMap<PaymentCreateDTO, Payment>()
@@ -21,7 +23,7 @@ namespace ProjectCinema.MappingProfiles
 
             //Create automapper for updating the payment
             CreateMap<PaymentUpdateDTO, Payment>()
-                .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null)); ;
+                .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
         }
     }
 }

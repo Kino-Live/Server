@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ProjectCinema.BLL.DTO.Booking;
+using ProjectCinema.BLL.DTO.Notification;
 using ProjectCinema.Entities;
 
 namespace ProjectCinema.MappingProfiles
@@ -16,12 +17,12 @@ namespace ProjectCinema.MappingProfiles
                 .ForMember(dest => dest.User, opt => opt.MapFrom(src => src.User))
                 .ForMember(dest => dest.Payment, opt => opt.MapFrom(src => src.Payment))
                 .ForMember(dest => dest.Promocode, opt => opt.MapFrom(src => src.Promocode))
-                .ForMember(dest => dest.Tickets, opt => opt.MapFrom(src => src.Tickets));
+                .ForMember(dest => dest.Tickets, opt => opt.MapFrom(src => src.Tickets))
+                .ForMember(dest => dest.Notifications, opt => opt.MapFrom(src => src.Notifications));
 
             //Create automapper for creation booking
             CreateMap<BookingCreateDTO, Booking>()
                 .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.UserId))
-                .ForMember(dest => dest.PaymentId, opt => opt.MapFrom(src => src.PaymentId))
                 .ForMember(dest => dest.PromocodeId, opt => opt.MapFrom(src => src.PromocodeId));
 
             //Create automapper for updating booking
