@@ -12,6 +12,10 @@ namespace ProjectCinema.BLL.DTO.ShowTime
         public DateTime EndTime { get; set; }
         public ViewingFormat ViewingFormat { get; set; }
         public ShowTimeStatus ShowTimeStatus { get; set; }
-        public Decimal TicketPrice { get; set; }
+        public decimal TicketPrice { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
+        public int MovieScreeningId { get; set; }
+        public int HallId { get; set; }
     }
 }

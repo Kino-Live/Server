@@ -8,6 +8,7 @@ namespace ProjectCinema.BLL.DTO.Ticket
     {
         public TicketStatus? TicketStatus { get; set; }
 
-        public Decimal? PriceAtPurchase { get; set; }
+        [Range(0.01, double.MaxValue, ErrorMessage = "Price must be greater than 0")]
+        public decimal? PriceAtPurchase { get; set; }
     }
 }
