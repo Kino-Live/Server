@@ -19,25 +19,26 @@ namespace ProjectCinema.BLL.Services
                                          IMovieScreeningValidationService
     {
         private readonly IMovieScreeningRepository _movieScreeningRepository;
+        private readonly IMovieRepository _movieRepository;
         private readonly IMapper _mapper;
-        private readonly ICinemaService _cinemaService;
-        private readonly IMovieService _movieService;
+        //private readonly ICinemaService _cinemaService;
+        //private readonly IMovieService _movieService;
 
         private readonly AplicationDBContext _context;
 
         public MovieScreeningService(
                               IMovieScreeningRepository movieScreeningRepository, 
                               IMapper mapper,
-                              ICinemaService cinemaService,
-                              IMovieService movieService,
+                              IMovieRepository movieRepository,
                               AplicationDBContext context)
                               : base(movieScreeningRepository, mapper)
         {
 
             _mapper = mapper;
             _movieScreeningRepository = movieScreeningRepository;
-            _cinemaService = cinemaService;
-            _movieService = movieService;
+            //_cinemaService = cinemaService;
+            //_movieService = movieService;
+            _movieRepository = movieRepository;
             _context = context;
         }
         public async Task<MovieScreeningDTO> CreateAsync(MovieScreeningCreateDTO screeningDTO)
@@ -68,7 +69,7 @@ namespace ProjectCinema.BLL.Services
 
         public async Task<IEnumerable<MovieScreeningDTO>> GetMovieSreeningsByMovieIdAsync(int movieId)
         {
-            if( await _movieService.GetByIdAsync(movieId) == null)
+            if( await _movieRepository.GetByIdAsync(movieId) == null)
             {
                 throw new KeyNotFoundException($"Movie with id equal {movieId} does not exists");
             }
@@ -82,7 +83,7 @@ namespace ProjectCinema.BLL.Services
         public async Task<IEnumerable<MovieScreeningDetailsDTO>> GetScreeningsDetailsByMovieIdAsync(int movieId)
         {
 
-            if (await _movieService.GetByIdAsync(movieId) == null)
+            if (await _movieRepository.GetByIdAsync(movieId) == null)
             {
                 throw new KeyNotFoundException($"Movie with id equal {movieId} does not exists");
             }
@@ -111,35 +112,37 @@ namespace ProjectCinema.BLL.Services
 
         public async Task<bool> IsMovieScreeningExistsByCinemaAndMovieAsync(int cinemaId, int movieId)
         {
-            if( await _cinemaService.GetByIdAsync(cinemaId) == null)
-            {
-                throw new KeyNotFoundException($"Cinema id equal {cinemaId} does not exists");
-            }
+            throw new NotImplementedException();
+            //if( await _cinemaService.GetByIdAsync(cinemaId) == null)
+            //{
+            //    throw new KeyNotFoundException($"Cinema id equal {cinemaId} does not exists");
+            //}
 
-            if( await _movieService.GetByIdAsync(movieId) == null)
-            {
-                throw new KeyNotFoundException($"Movie id equal {movieId} does not exists");
-            }
+            //if( await _movieRepository.GetByIdAsync(movieId) == null)
+            //{
+            //    throw new KeyNotFoundException($"Movie id equal {movieId} does not exists");
+            //}
 
-            bool IsExists = await _context.MovieScreenings.AnyAsync(ms => ms.CinemaId == cinemaId && ms.MovieId == movieId);
+            //bool IsExists = await _context.MovieScreenings.AnyAsync(ms => ms.CinemaId == cinemaId && ms.MovieId == movieId);
 
-            return IsExists;
+            //return IsExists;
         }
 
         public async Task<IEnumerable<MovieScreeningDTO>> GetOverlappingScreeningsAsync(int cinemaId, DateTime startTime, DateTime endTime)
         {
-            if( await _cinemaService.GetByIdAsync(cinemaId) == null)
-            {
-                throw new KeyNotFoundException($"Cinema id equal {cinemaId} does not exists");
-            }
+            throw new NotImplementedException();
+            //if( await _cinemaService.GetByIdAsync(cinemaId) == null)
+            //{
+            //    throw new KeyNotFoundException($"Cinema id equal {cinemaId} does not exists");
+            //}
 
-            IEnumerable<MovieScreening> movieScreenings = await _context.MovieScreenings
-                                    .Where(ms => ms.CinemaId == cinemaId &&
-                                    ms.StartDate < endTime &&  
-                                    ms.EndDate > startTime)    
-                                    .ToListAsync();
+            //IEnumerable<MovieScreening> movieScreenings = await _context.MovieScreenings
+            //                        .Where(ms => ms.CinemaId == cinemaId &&
+            //                        ms.StartDate < endTime &&  
+            //                        ms.EndDate > startTime)    
+            //                        .ToListAsync();
 
-            return _mapper.Map<IEnumerable<MovieScreeningDTO>>(movieScreenings);
+            //return _mapper.Map<IEnumerable<MovieScreeningDTO>>(movieScreenings);
         }
     }
 }

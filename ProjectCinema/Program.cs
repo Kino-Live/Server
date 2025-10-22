@@ -47,7 +47,7 @@ namespace ProjectCinema
             //builder.Services.AddScoped<ICinemaRepository, CinemaRepository>();
             //builder.Services.AddScoped<IHallRepository, HallRepository>();
             builder.Services.AddScoped<IMovieRepository, MovieRepository>();
-            //builder.Services.AddScoped<IMovieScreeningRepository, MovieScreeningRepository>();
+            builder.Services.AddScoped<IMovieScreeningRepository, MovieScreeningRepository>();
             //builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
             //builder.Services.AddScoped<IPromocodeRepository, PromocodeRepository>();
             //builder.Services.AddScoped<ISeatRepository, SeatRepository>();
@@ -62,7 +62,7 @@ namespace ProjectCinema
             //builder.Services.AddScoped<IHallService, HallService>();
             builder.Services.AddScoped<IMovieService, MovieService>();
 
-            //builder.Services.AddScoped<IMovieScreeningCrudService, MovieScreeningService>();
+            builder.Services.AddScoped<IMovieScreeningQueryService, MovieScreeningService>();
             //builder.Services.AddScoped<IMovieScreeningCrudService, MovieScreeningService>();
             //builder.Services.AddScoped<IMovieScreeningValidationService, MovieScreeningService>();
 
