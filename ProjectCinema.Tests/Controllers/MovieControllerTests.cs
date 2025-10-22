@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using ProjectCinema.BLL.DTO.Movie;
+using ProjectCinema.BLL.DTO.MovieScreening;
 using ProjectCinema.BLL.Interfaces;
 using ProjectCinema.BLL.Interfaces.IMovieScreeningServices;
 using ProjectCinema.Controllers;
@@ -28,50 +29,89 @@ namespace ProjectCinema.Tests.Controllers
 
         public MovieControllerTests()
         {
-            // Настройка in-memory базы данных для тестов
+
             var options = new DbContextOptionsBuilder<AplicationDBContext>()
                 .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
                 .Options;
 
             _context = new AplicationDBContext(options);
 
-            // Настройка AutoMapper
             var config = new MapperConfiguration(cfg =>
             {
                 cfg.AddProfile<ProjectCinema.MappingProfiles.MovieMappingProfile>();
             });
             _mapper = config.CreateMapper();
 
-            // Создание репозитория
             _movieRepository = new MovieRepository(_context);
 
+            // Создание мока для IMovieScreeningQueryService
+            var mockScreeningQueryService = new Mock<IMovieScreeningQueryService>();
+            mockScreeningQueryService
+                .Setup(x => x.GetMovieSreeningsByMovieIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(new List<MovieScreeningDTO>());
 
-            // Создание сервиса
             _movieService = new ProjectCinema.BLL.Services.MovieService(
                 _movieRepository, 
-                _mapper);
+                _mapper, 
+                mockScreeningQueryService.Object);
 
-            // Создание валидаторов
             var createValidator = new MovieCreateDTOValidator();
             var updateValidator = new MovieUpdateDTOValidator();
 
-            // Создание контроллера
             _controller = new MovieController(_movieService, createValidator, updateValidator);
         }
 
         [Fact]
         public async Task GetMoviesAsync_ShouldReturnAllMovies()
         {
-            // Arrange - подготовка данных
             await SeedTestMovies();
 
-            // Act - выполнение действия
             var result = await _controller.GetMoviesAsync();
 
-            // Assert - проверка результата
             var okResult = Assert.IsType<OkObjectResult>(result.Result);
             var movies = Assert.IsAssignableFrom<IEnumerable<MovieDTO>>(okResult.Value);
             Assert.Equal(5, movies.Count());
+        }
+
+        [Fact]
+        public async Task GetMovieDetailsByIdAsync_WithValidId_ShouldReturnMovieDetails()
+        {
+            // Arrange
+            await SeedTestMovies();
+            var movieId = 1;
+
+            // Act
+            var result = await _controller.GetMovieDetailsByIdAsync(movieId);
+
+            // Assert
+            var okResult = Assert.IsType<OkObjectResult>(result.Result);
+            var movieDetails = Assert.IsType<MovieDetailsDTO>(okResult.Value);
+            Assert.Equal(movieId, movieDetails.MovieId);
+            Assert.Equal("The Matrix", movieDetails.MovieName);
+            Assert.Equal("A computer hacker learns about the true nature of reality", movieDetails.Description);
+            Assert.Equal(136, movieDetails.DurationInMinutes);
+            Assert.Equal(18, movieDetails.AgeRestriction);
+            Assert.Equal("Sci-Fi, Action", movieDetails.Genre);
+            Assert.Equal("English", movieDetails.Language);
+            Assert.Equal("Warner Bros.", movieDetails.ProductionStudio);
+            Assert.Equal("The Wachowskis", movieDetails.Director);
+            Assert.Equal("Keanu Reeves, Laurence Fishburne", movieDetails.MainCast);
+            Assert.Equal(StatusOfMovie.Active, movieDetails.Status);
+        }
+
+        [Fact]
+        public async Task GetMovieDetailsByIdAsync_WithInvalidId_ShouldReturnBadRequest()
+        {
+            // Arrange
+            await SeedTestMovies();
+            var invalidId = 999;
+
+            // Act
+            var result = await _controller.GetMovieDetailsByIdAsync(invalidId);
+
+            // Assert
+            var badRequestResult = Assert.IsType<BadRequestObjectResult>(result.Result);
+            Assert.NotNull(badRequestResult.Value);
         }
 
 

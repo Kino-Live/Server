@@ -1,6 +1,7 @@
 using AutoMapper;
 using Moq;
 using ProjectCinema.BLL.DTO.Movie;
+using ProjectCinema.BLL.DTO.MovieScreening;
 using ProjectCinema.BLL.Interfaces;
 using ProjectCinema.BLL.Interfaces.IMovieScreeningServices;
 using ProjectCinema.BLL.Services;
@@ -23,42 +24,74 @@ namespace ProjectCinema.Tests.Services
 
         public MovieServiceTests()
         {
-            // Настройка in-memory базы данных
             var options = new DbContextOptionsBuilder<AplicationDBContext>()
                 .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
                 .Options;
 
             _context = new AplicationDBContext(options);
 
-            // Настройка AutoMapper
             var config = new MapperConfiguration(cfg =>
             {
                 cfg.AddProfile<ProjectCinema.MappingProfiles.MovieMappingProfile>();
             });
             _mapper = config.CreateMapper();
 
-            // Создание репозитория
             _movieRepository = new MovieRepository(_context);
 
             // Создание мока для IMovieScreeningQueryService
+            _mockScreeningQueryService = new Mock<IMovieScreeningQueryService>();
+            _mockScreeningQueryService
+                .Setup(x => x.GetMovieSreeningsByMovieIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(new List<MovieScreeningDTO>());
 
-
-            // Создание сервиса
-            _movieService = new MovieService(_movieRepository, _mapper);
+            _movieService = new MovieService(_movieRepository, _mapper, _mockScreeningQueryService.Object);
         }
 
         [Fact]
         public async Task GetAllAsync_ShouldReturnAllMovies()
         {
-            // Arrange
             await SeedTestMovies();
 
-            // Act
             var result = await _movieService.GetAllAsync();
+
+            Assert.NotNull(result);
+            Assert.Equal(5, result.Count());
+        }
+
+        [Fact]
+        public async Task GetMovieDetailsAsync_WithValidId_ShouldReturnMovieDetails()
+        {
+            // Arrange
+            await SeedTestMovies();
+            var movieId = 1;
+
+            // Act
+            var result = await _movieService.GetMovieDetailsAsync(movieId);
 
             // Assert
             Assert.NotNull(result);
-            Assert.Equal(5, result.Count());
+            Assert.Equal(movieId, result.MovieId);
+            Assert.Equal("The Matrix", result.MovieName);
+            Assert.Equal("A computer hacker learns about the true nature of reality", result.Description);
+            Assert.Equal(136, result.DurationInMinutes);
+            Assert.Equal(18, result.AgeRestriction);
+            Assert.Equal("Sci-Fi, Action", result.Genre);
+            Assert.Equal("English", result.Language);
+            Assert.Equal("Warner Bros.", result.ProductionStudio);
+            Assert.Equal("The Wachowskis", result.Director);
+            Assert.Equal("Keanu Reeves, Laurence Fishburne", result.MainCast);
+            Assert.Equal(StatusOfMovie.Active, result.Status);
+        }
+
+        [Fact]
+        public async Task GetMovieDetailsAsync_WithInvalidId_ShouldThrowKeyNotFoundException()
+        {
+            // Arrange
+            await SeedTestMovies();
+            var invalidId = 999;
+
+            // Act & Assert
+            await Assert.ThrowsAsync<KeyNotFoundException>(() => _movieService.GetMovieDetailsAsync(invalidId));
         }
 
 
