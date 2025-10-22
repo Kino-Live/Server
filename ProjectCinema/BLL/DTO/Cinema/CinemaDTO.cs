@@ -10,7 +10,5 @@ namespace ProjectCinema.BLL.DTO.Cinema
         public string? CinemaName { get; set; }
         public string? Adress { get; set; }
         public string MapLocation { get; set; } = null!;
-        public DateTime CreatedAt { get; set; }
-        public DateTime UpdatedAt { get; set; }
     }
 }
