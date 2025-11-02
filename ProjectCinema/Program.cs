@@ -1,5 +1,8 @@
 using FluentValidation;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 using ProjectCinema.BLL.DTO.Cinema;
 using ProjectCinema.BLL.DTO.Halls;
 using ProjectCinema.BLL.DTO.Movie;
@@ -53,7 +56,7 @@ namespace ProjectCinema
             //builder.Services.AddScoped<ISeatRepository, SeatRepository>();
             //builder.Services.AddScoped<IShowTimeRepository, ShowTimeRepository>();
             //builder.Services.AddScoped<ITicketRepository, TicketRepository>();
-            //builder.Services.AddScoped<IUserRepository, UserRepository>();
+            builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 
             //Add services
@@ -72,12 +75,42 @@ namespace ProjectCinema
             //builder.Services.AddScoped<IShowTimeService,  ShowTimeService>();
             //builder.Services.AddScoped<ITicketService, TicketService>();
             //builder.Services.AddScoped<IUserService, UserService>();
+            
+            // Add authentication services
+            builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
+            builder.Services.AddScoped<IAuthService, AuthService>();
 
 
 
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            // Configure JWT Authentication
+            var jwtSettings = builder.Configuration.GetSection("JwtSettings");
+            var secretKey = jwtSettings["SecretKey"] ?? throw new InvalidOperationException("JWT SecretKey is not configured");
+            var issuer = jwtSettings["Issuer"] ?? throw new InvalidOperationException("JWT Issuer is not configured");
+            var audience = jwtSettings["Audience"] ?? throw new InvalidOperationException("JWT Audience is not configured");
+
+            builder.Services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(secretKey)),
+                    ValidateIssuer = true,
+                    ValidIssuer = issuer,
+                    ValidateAudience = true,
+                    ValidAudience = audience,
+                    ValidateLifetime = true,
+                    ClockSkew = TimeSpan.Zero
+                };
+            });
             builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
             //Add fluent validations
@@ -122,6 +155,7 @@ namespace ProjectCinema
 
             app.UseHttpsRedirection();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
 

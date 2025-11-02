@@ -35,7 +35,7 @@ namespace ProjectCinema.BLL.Services
 
             if(await _userRepository.GetByIdAsync(userId) == null)
             {
-                throw new Exception($"User with id equal {userId} does not exists");
+                throw new KeyNotFoundException($"User with id equal {userId} does not exists");
             }
 
             User user = await _userRepository.GetByIdAsync(userId);

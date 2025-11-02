@@ -29,6 +29,9 @@ namespace ProjectCinema.Entities
         [Required]
         public byte[] PasswordHash { get; set; } = null!;
 
+        [Required]
+        public byte[] PasswordSalt { get; set; } = null!;
+
         [Phone]
         public string PhoneNumber { get; set; } = null!;
 
@@ -41,6 +44,10 @@ namespace ProjectCinema.Entities
         public DateTime CreatedAt { get; set; }
 
         public DateTime UpdatedAt { get; set; }
+
+        public string? RefreshToken { get; set; }
+
+        public DateTime? RefreshTokenExpiry { get; set; }
 
         public ICollection<Booking>? Bookings { get; set; }
         public ICollection<Review>? Reviews { get; set; }
