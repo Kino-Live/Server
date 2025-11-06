@@ -30,6 +30,9 @@ using ProjectCinema.Validations.RowValidation;
 using ProjectCinema.Validations.SeatValidation;
 using ProjectCinema.Validations.ShowTimeValidation;
 using ProjectCinema.Validations.TicketValidation;
+using ProjectCinema.Validations.UserValidation;
+using ProjectCinema.BLL.DTO.Users;
+using ProjectCinema.Settings;
 
 namespace ProjectCinema
 {
@@ -57,6 +60,7 @@ namespace ProjectCinema
             //builder.Services.AddScoped<IShowTimeRepository, ShowTimeRepository>();
             //builder.Services.AddScoped<ITicketRepository, TicketRepository>();
             builder.Services.AddScoped<IUserRepository, UserRepository>();
+            builder.Services.AddScoped<IPasswordResetTokenRepository, PasswordResetTokenRepository>();
 
 
             //Add services
@@ -79,6 +83,8 @@ namespace ProjectCinema
             // Add authentication services
             builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
             builder.Services.AddScoped<IAuthService, AuthService>();
+            builder.Services.AddScoped<IPasswordResetService, PasswordResetService>();
+            builder.Services.AddSingleton<IEmailSender, SmtpEmailSender>();
 
 
 
@@ -113,9 +119,15 @@ namespace ProjectCinema
             });
             builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
+            // Bind settings
+            builder.Services.Configure<EmailOptions>(builder.Configuration.GetSection("Email"));
+            builder.Services.Configure<PasswordResetOptions>(builder.Configuration.GetSection("PasswordReset"));
+
             //Add fluent validations
             builder.Services.AddScoped<IValidator<MovieCreateDTO>, MovieCreateDTOValidator>();
             builder.Services.AddScoped<IValidator<MovieUpdateDTO>, MovieUpdateDTOValidator>();
+            builder.Services.AddScoped<IValidator<PasswordResetRequestDTO>, PasswordResetRequestDTOValidator>();
+            builder.Services.AddScoped<IValidator<PasswordResetConfirmDTO>, PasswordResetConfirmDTOValidator>();
 
             //builder.Services.AddScoped<IValidator<CinemaCreateDTO>, CinemaCreateDTOValidator>();
             //builder.Services.AddScoped<IValidator<CinemaUpdateDTO>, CinemaUpdateValidator>();

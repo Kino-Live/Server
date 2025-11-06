@@ -21,6 +21,7 @@ namespace ProjectCinema.Data
         public DbSet<StreamingAccess> StreamingAccesses { get; set; }
         public DbSet<Notification> Notifications { get; set; }
         public DbSet<Review> Reviews { get; set; }
+        public DbSet<PasswordResetToken> PasswordResetTokens { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -169,6 +170,27 @@ namespace ProjectCinema.Data
                 .WithMany()
                 .HasForeignKey(r => r.MovieId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            // configuration for PasswordResetToken
+            modelBuilder.Entity<PasswordResetToken>()
+                .ToTable("PasswordResetTokens");
+
+            modelBuilder.Entity<PasswordResetToken>()
+                .HasOne(t => t.User)
+                .WithMany()
+                .HasForeignKey(t => t.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<PasswordResetToken>()
+                .HasIndex(t => t.TokenHash)
+                .IsUnique();
+
+            modelBuilder.Entity<PasswordResetToken>()
+                .HasIndex(t => new { t.UserId, t.ExpiresAt });
+
+            modelBuilder.Entity<PasswordResetToken>()
+                .Property(t => t.TokenHash)
+                .HasMaxLength(64);
         }
 
     }
