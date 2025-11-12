@@ -116,6 +116,7 @@ namespace ProjectCinema
             //Add fluent validations
             builder.Services.AddScoped<IValidator<MovieCreateDTO>, MovieCreateDTOValidator>();
             builder.Services.AddScoped<IValidator<MovieUpdateDTO>, MovieUpdateDTOValidator>();
+            //builder.Services.AddScoped<IValidator<MovieFilterRequestDTO>, MovieFilterRequestDTOValidator>();
 
             //builder.Services.AddScoped<IValidator<CinemaCreateDTO>, CinemaCreateDTOValidator>();
             //builder.Services.AddScoped<IValidator<CinemaUpdateDTO>, CinemaUpdateValidator>();

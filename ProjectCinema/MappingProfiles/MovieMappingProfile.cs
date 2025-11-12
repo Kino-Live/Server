@@ -25,6 +25,9 @@ namespace ProjectCinema.MappingProfiles
             //Create automapper for updating the movie
             CreateMap<MovieUpdateDTO, Movie>()
                 .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
+
+            CreateMap<Movie, MovieListItemDTO>()
+                .ForMember(dest => dest.ReleaseYear, opt => opt.MapFrom(src => src.ReleaseYear.Year));
         }
     }
 }

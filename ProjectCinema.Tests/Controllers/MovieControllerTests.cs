@@ -57,8 +57,9 @@ namespace ProjectCinema.Tests.Controllers
 
             var createValidator = new MovieCreateDTOValidator();
             var updateValidator = new MovieUpdateDTOValidator();
+            var filterValidator = new MovieFilterRequestDTOValidator();
 
-            _controller = new MovieController(_movieService, createValidator, updateValidator);
+            _controller = new MovieController(_movieService, createValidator, updateValidator, filterValidator);
         }
 
         [Fact]
