@@ -167,7 +167,7 @@ namespace ProjectCinema.Data
             // configuration one-to-many relationship between entities Review and Movie
             modelBuilder.Entity<Review>()
                 .HasOne(r => r.Movie)
-                .WithMany()
+                .WithMany(m => m.Reviews)
                 .HasForeignKey(r => r.MovieId)
                 .OnDelete(DeleteBehavior.Restrict);
 

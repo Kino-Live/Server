@@ -128,6 +128,7 @@ namespace ProjectCinema
             builder.Services.AddScoped<IValidator<MovieUpdateDTO>, MovieUpdateDTOValidator>();
             builder.Services.AddScoped<IValidator<PasswordResetRequestDTO>, PasswordResetRequestDTOValidator>();
             builder.Services.AddScoped<IValidator<PasswordResetConfirmDTO>, PasswordResetConfirmDTOValidator>();
+            //builder.Services.AddScoped<IValidator<MovieFilterRequestDTO>, MovieFilterRequestDTOValidator>();
 
             //builder.Services.AddScoped<IValidator<CinemaCreateDTO>, CinemaCreateDTOValidator>();
             //builder.Services.AddScoped<IValidator<CinemaUpdateDTO>, CinemaUpdateValidator>();

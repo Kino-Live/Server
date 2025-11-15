@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
+using ProjectCinema.BLL.DTO.Common;
 using ProjectCinema.BLL.DTO.Movie;
 using ProjectCinema.BLL.Interfaces;
 using ProjectCinema.Enums;
@@ -14,14 +15,17 @@ namespace ProjectCinema.Controllers
         private readonly IMovieService _movieService;
         private readonly IValidator<MovieCreateDTO> _createValidator;
         private readonly IValidator<MovieUpdateDTO> _updateValidator;
+        private readonly IValidator<MovieFilterRequestDTO> _filterValidator;
 
         public MovieController(IMovieService movieService,
                                IValidator<MovieCreateDTO> createValidator,
-                               IValidator<MovieUpdateDTO> updateValidator)
+                               IValidator<MovieUpdateDTO> updateValidator,
+                               IValidator<MovieFilterRequestDTO> filterValidator)
         {
             _movieService = movieService;
             _createValidator = createValidator;
             _updateValidator = updateValidator;
+            _filterValidator = filterValidator;
         }
         [HttpGet("allMovies")]
         public async Task<ActionResult<IEnumerable<MovieDTO>>> GetMoviesAsync()
@@ -128,6 +132,23 @@ namespace ProjectCinema.Controllers
             {
                 return BadRequest(new { error = ex.Message });
             }
+        }
+
+        [HttpGet("search")]
+        public async Task<ActionResult<PagedResult<MovieListItemDTO>>> GetFilteredMoviesAsync([FromQuery] MovieFilterRequestDTO filter, CancellationToken ct)
+        {
+            var validResult = _filterValidator.Validate(filter);
+
+            if (!validResult.IsValid)
+            {
+                return BadRequest(validResult.Errors.Select(e => new
+                {
+                    Field = e.PropertyName,
+                    Error = e.ErrorMessage
+                }));
+            }
+            var result = await _movieService.GetFilteredMovieAsync(filter, ct);
+            return Ok(result);
         }
     }
 }

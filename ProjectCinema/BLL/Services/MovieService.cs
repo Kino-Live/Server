@@ -1,8 +1,11 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
+using ProjectCinema.BLL.DTO.Common;
 using ProjectCinema.BLL.DTO.Movie;
 using ProjectCinema.BLL.DTO.MovieScreening;
 using ProjectCinema.BLL.Interfaces;
 using ProjectCinema.BLL.Interfaces.IMovieScreeningServices;
+using ProjectCinema.DAL.Models;
 using ProjectCinema.Data;
 using ProjectCinema.Entities;
 using ProjectCinema.Enums;
@@ -79,6 +82,44 @@ namespace ProjectCinema.BLL.Services
 
             return _mapper.Map<MovieDTO>(movie);
 
+        }
+
+        public async Task<PagedResult<MovieListItemDTO>> GetFilteredMovieAsync(MovieFilterRequestDTO filter, CancellationToken ct)
+        {
+            var filterParams = new MovieFilterParams
+            {
+                Genres = filter.Genres,
+                YearFrom = filter.YearFrom,
+                YearTo = filter.YearTo,
+                RatingMin = filter.RatingMin,
+                RatingMax = filter.RatingMax
+            };
+
+            var query = _movieRepository.BuildFilteredQuery(filterParams);
+
+            var totalCount = await query.CountAsync(ct);
+
+            query = query.OrderByDescending(m => m.ReleaseYear.Year);
+
+            int page = filter.Page < 1 ? 1 : filter.Page;
+            int pageSize = filter.PageSize > 100 ? 100 : filter.PageSize;
+
+            var movies = await query
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync(ct);
+
+            IEnumerable<MovieListItemDTO> movieDtos = _mapper.Map<IEnumerable<MovieListItemDTO>>(movies);
+
+            var result = new PagedResult<MovieListItemDTO>
+            {
+                Items = movieDtos,
+                Total = totalCount,
+                Page = page,
+                PageSize = pageSize
+            };
+
+            return result;
         }
     }
 }
