@@ -13,5 +13,7 @@ namespace ProjectCinema.BLL.Interfaces
         Task<IEnumerable<ShowTimeDTO>> GetShowTimesByHallIdAsync(int hallId);
         Task<IEnumerable<ShowTimeDTO>> GetShowTimesByStatus(ShowTimeStatus showTimeStatus);
         Task<IEnumerable<ShowTimeDTO>> GetAvailiableShowTimesByMovieId(int movieId);
+        Task<AvailableDatesDTO> GetAvailableDatesByMovieIdAsync(int movieId);
+        Task<ShowTimesByDateResponseDTO> GetShowTimesByMovieIdAndDateAsync(int movieId, DateOnly date);
     }
 }

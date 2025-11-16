@@ -27,7 +27,14 @@ namespace ProjectCinema.MappingProfiles
 
             //Create automapper for updating the showtime
             CreateMap<ShowTimeUpdateDTO, ShowTime>()
-                .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null)); ;
+                .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
+
+            //Create automapper for showtime by date DTO
+            CreateMap<ShowTime, ShowTimeByDateDTO>()
+                .ForMember(dest => dest.HallName, opt => opt.MapFrom(src => src.Hall != null ? src.Hall.HallName : null))
+                .ForMember(dest => dest.CinemaId, opt => opt.MapFrom(src => src.Hall != null && src.Hall.Cinema != null ? src.Hall.Cinema.CinemaId : 0))
+                .ForMember(dest => dest.CinemaName, opt => opt.MapFrom(src => src.Hall != null && src.Hall.Cinema != null ? src.Hall.Cinema.CinemaName : null))
+                .ForMember(dest => dest.CinemaAddress, opt => opt.MapFrom(src => src.Hall != null && src.Hall.Cinema != null ? src.Hall.Cinema.Adress : null));
         }
     }
 }

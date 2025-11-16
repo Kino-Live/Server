@@ -734,13 +734,11 @@ namespace ProjectCinema.Tests.Services
 
         [Fact]
         public async Task RequestPasswordReset_EmptyDefaultRedirect_ThrowsInvalidOperationException()
-        {
-            // Arrange
+        {   
             var email = "user@example.com";
             var user = new User { UserId = 61, Email = email };
             _userRepoMock.Setup(r => r.GetByEmailAsync(email)).ReturnsAsync(user);
 
-            // DefaultRedirectUrl empty
             _optionsMock.Setup(o => o.Value).Returns(new PasswordResetOptions
             {
                 TokenTTLMinutes = 30,
@@ -748,7 +746,6 @@ namespace ProjectCinema.Tests.Services
                 AllowedRedirectHosts = new[] { "example.com" }
             });
 
-            // Allow token creation before the failure on URL building
             _tokenRepoMock
                 .Setup(r => r.CreateAsync(It.IsAny<PasswordResetToken>()))
                 .ReturnsAsync((PasswordResetToken t) => t);
@@ -759,7 +756,6 @@ namespace ProjectCinema.Tests.Services
                 _emailSenderMock.Object,
                 _optionsMock.Object);
 
-            // Act
             var ex = await Assert.ThrowsAsync<InvalidOperationException>(async () =>
                 await service.RequestPasswordResetAsync(
                     new PasswordResetRequestDTO { Email = email, RedirectUrl = null },
@@ -774,7 +770,6 @@ namespace ProjectCinema.Tests.Services
         [Fact]
         public async Task RequestPasswordReset_NullRequestIp_PersistsNull()
         {
-            // Arrange
             var email = "user@example.com";
             var user = new User { UserId = 71, Email = email };
             _userRepoMock.Setup(r => r.GetByEmailAsync(email)).ReturnsAsync(user);
@@ -808,7 +803,6 @@ namespace ProjectCinema.Tests.Services
         [Fact]
         public async Task RequestPasswordReset_EmptyUserAgent_PersistsAsIs()
         {
-            // Arrange
             var email = "user@example.com";
             var user = new User { UserId = 81, Email = email };
             _userRepoMock.Setup(r => r.GetByEmailAsync(email)).ReturnsAsync(user);
@@ -830,13 +824,11 @@ namespace ProjectCinema.Tests.Services
 
             var service = CreateService();
 
-            // Act
             await service.RequestPasswordResetAsync(
                 new PasswordResetRequestDTO { Email = email },
                 requestIp: "127.0.0.1",
                 userAgent: string.Empty);
 
-            // Assert
             Assert.NotNull(capturedToken);
             Assert.Equal(string.Empty, capturedToken!.UserAgent);
         }

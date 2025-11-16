@@ -145,5 +145,49 @@ namespace ProjectCinema.BLL.Services
             return _mapper.Map<ShowTimeDTO>(showTime);
 
         }
+
+        public async Task<AvailableDatesDTO> GetAvailableDatesByMovieIdAsync(int movieId)
+        {
+            var movie = await _movieService.GetByIdAsync(movieId);
+            if (movie == null)
+            {
+                throw new KeyNotFoundException($"Movie id equal {movieId} does not exist");
+            }
+
+            var availableDates = await _showTimeRepository.GetAvailableDatesByMovieIdAsync(movieId);
+
+            return new AvailableDatesDTO
+            {
+                MovieId = movieId,
+                MovieName = movie.MovieName,
+                AvailableDates = availableDates
+            };
+        }
+
+        public async Task<ShowTimesByDateResponseDTO> GetShowTimesByMovieIdAndDateAsync(int movieId, DateOnly date)
+        {
+            var movie = await _movieService.GetByIdAsync(movieId);
+            if (movie == null)
+            {
+                throw new KeyNotFoundException($"Movie id equal {movieId} does not exist");
+            }
+
+            var today = DateOnly.FromDateTime(DateTime.Now);
+            if (date < today)
+            {
+                throw new ArgumentException($"Date {date} is in the past. Only future dates are allowed.");
+            }
+
+            var showTimes = await _showTimeRepository.GetShowTimesByMovieIdAndDateAsync(movieId, date);
+            var showTimeByDateDTOs = _mapper.Map<List<ShowTimeByDateDTO>>(showTimes);
+
+            return new ShowTimesByDateResponseDTO
+            {
+                MovieId = movieId,
+                MovieName = movie.MovieName,
+                SelectedDate = date,
+                ShowTimes = showTimeByDateDTOs
+            };
+        }
     }
 }

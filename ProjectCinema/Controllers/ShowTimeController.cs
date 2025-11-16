@@ -92,6 +92,50 @@ namespace ProjectCinema.Controllers
 
         }
 
+        [HttpGet("available-dates/{movieId}")]
+        public async Task<ActionResult<AvailableDatesDTO>> GetAvailableDatesByMovieIdAsync([FromRoute] int movieId)
+        {
+            try
+            {
+                AvailableDatesDTO availableDatesDTO = await _showTimeService.GetAvailableDatesByMovieIdAsync(movieId);
+
+                return Ok(availableDatesDTO);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("by-movie/{movieId}/date/{date}")]
+        public async Task<ActionResult<ShowTimesByDateResponseDTO>> GetShowTimesByMovieIdAndDateAsync(
+            [FromRoute] int movieId,
+            [FromRoute] DateOnly date)
+        {
+            try
+            {
+                ShowTimesByDateResponseDTO showTimesByDateDTO = await _showTimeService.GetShowTimesByMovieIdAndDateAsync(movieId, date);
+
+                return Ok(showTimesByDateDTO);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         [HttpGet("by-status")]
         public async Task<ActionResult<IEnumerable<ShowTimeDTO>>> GetShowTimesByStatusAsync([FromQuery] ShowTimeStatus showTimeStatus)
         {
